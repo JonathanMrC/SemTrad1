@@ -1,0 +1,8 @@
+400f			    ORG $4000		; directiva
+4000			E2  EQU $4100		; directiva
+4000	26 00		    BNE E1		; REL
+4002	18 26 ff fb		E1  LBNE E1		; REL
+4006	26 f8		    BNE E2		; invalido
+4008	18 26 00 f4		    LBNE E2		; REL
+400c	00 00 00 		    BSZ 3		; directiva
+400f			    END		; directiva

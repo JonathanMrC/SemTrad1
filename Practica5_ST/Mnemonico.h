@@ -1,0 +1,401 @@
+#ifndef MNEMONICO_H_INCLUDED
+#define MNEMONICO_H_INCLUDED
+#include<bits/stdc++.h>
+
+using namespace std;
+
+/*utilidades************************************************************************/
+
+bool esNum(char &c){                //es para saber si un char es un numero
+    if(c >= '0' && c <= '9')
+        return true;
+    return false;
+}
+
+bool esDecValido(string cadena){
+    if(cadena[0] == '-')
+        cadena.erase(0, 1);
+    else if(esNum(cadena[0])){
+        for(char car : cadena){
+            if(!esNum(car))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+bool esLetra(char c, int modo){//modo 0 = mayusculas, modo = 1 minusculas, modo = 2 letra
+    bool mayus = false, minusc = false;
+    if(c >= 'A' && c <= 'Z')
+        mayus = true;
+    if( c >= 'a' && c <= 'z')
+        minusc = true;
+    if((modo == 0) && mayus)
+        return true;
+    if((modo == 1) && minusc)
+        return true;
+    if((modo == 2) && (minusc || mayus))
+        return true;
+    return false;
+}
+
+long long int potencia(int base,int pot){
+    long long int res = 1;
+    for(int i = 0; i < pot;++i)
+        res*=base;
+    return res;
+}
+
+int is8or16(int valor){ //si es un entero de 8 bits regresa 1, si es de 16 bit regresa 2, sino -1
+    if((valor <= 255 && valor >= 0) || (valor <= 127 && valor >= -127))
+        return 1;
+    else if((valor <= 65535 && valor >= 0) || (valor <= 32767 && valor >= -32768))
+        return 2;
+    return -1;
+}
+
+char CharppHex(char a){             //aumenta el char como si fuera un hexadecimal
+    if(a <= '8' && a >= '0')
+        a++;
+    else if(a == '9')
+        a = 'a';
+    else if(a >= 'a' && a <= 'e')
+        a++;
+    else if(a == 'f')
+        a = '0';
+    else return '-';
+    return a;
+}
+
+int HextoDec(string valor, bool cmp2){
+    char c = tolower(valor[0]);
+    int val = 0;
+    bool neg = false, allzero = true;
+    if(cmp2){
+        if((c == '8') || (c == '9') || (c <= 'f' && c >= 'a') && ((valor.size() == 2) || (valor.size() == 4))){
+            neg = true;
+            valor[0] = '0';
+            for(int i = 1; i < valor.size();++i){
+                if(valor[i] != '0')
+                    allzero = false;
+            }
+            if(allzero)
+                return 0;
+        }
+    }
+    reverse(valor.begin(), valor.end());
+    for(unsigned int i = 0; i < valor.size();++i){
+        c = tolower(valor[i]);
+        if(c >= '0' && c <= '9')
+            val+=(c-'0')*(potencia(16, i));
+        else if(c >= 'a' && c <= 'f')
+            val+=(10+ c-'a')*(potencia(16, i));
+        else return 1e7;
+    }
+    if(neg && cmp2)
+        val*=-1;
+    return val;
+}
+
+int StringDectoIntDec(string valor){
+    bool neg = false;
+    if(valor[0] == '-'){
+        neg = true;
+        valor.erase(0, 1);
+    }
+    reverse(valor.begin(), valor.end());
+    int val = 0, pot;
+    for(unsigned int i = 0; i < valor.size();++i){
+        if(valor[i] >= '0' && valor[i] <= '9'){
+            pot = potencia(10, i);
+            val+=(valor[i]-'0')*pot;
+        }
+        else return 1e7;
+    }
+    if(neg)
+        val*=-1;
+    return val;
+}
+
+int OcttoDec(string valor, bool cmp2){
+    char c;
+    int val = 0;
+    bool neg = false;
+    if(cmp2){
+        if(c <= '7' && c >= '4'){
+            neg = true;
+            valor[0] = '0';
+        }
+    }
+    reverse(valor.begin(), valor.end());
+    for(unsigned int i = 0; i < valor.size();++i){
+        c = tolower(valor[i]);
+        if(c >= '0' && c <= '8')
+            val+=(c-'0')*(potencia(8, i));
+        else return 1e7;
+    }
+    if(neg && cmp2)
+        val*=-1;
+    return val;
+}
+
+int BintoDec(string valor, bool cmp2){
+    bool neg = false;
+    if(cmp2 && valor[0] == '1'){
+        neg = true;
+        valor[0] = '0';
+    }
+    reverse(valor.begin(), valor.end());
+    int val = 0;
+    char c;
+    for(unsigned int i = 0; i < valor.size();++i){
+        c = tolower(valor[i]);
+        if(c >= '0' && c <= '1')
+            val+=(c-'0')*(potencia(2, i));
+        else return 1e7;
+    }
+    if(neg && cmp2)
+        val*=-1;
+    return val;
+}
+
+void Hexpp(string &CL, int a){      //formato de cadena++ en hexadecimal
+    if(a < 0)
+        a = 65535 + a;
+    char uno, dos = CL[2], tres = CL[1], cuatro = CL[0];
+    while(a--){
+        uno = CharppHex(CL[3]);
+        if(uno == '0'){
+            dos = CharppHex(CL[2]);
+            if(dos == '0'){
+                tres = CharppHex(CL[1]);
+                if(tres == '0'){
+                    cuatro = CharppHex(CL[0]);
+                }
+            }
+        }
+        CL[0] = cuatro;
+        CL[1] = tres;
+        CL[2] = dos;
+        CL[3] = uno;
+        //cout << "CL++ = " << CL << endl;
+    }
+}
+
+string ConvertirAHex(string valor){         //convierte de cualquier base a hexadecimal
+    if(!valor.size()) return "";
+    char c = valor[0];
+    if(c >= '0' && c <= '9'){               //es decimal
+        string formato = "0000";
+        Hexpp(formato, StringDectoIntDec(valor));
+        return formato;
+    }
+    if(c == '#'){
+        valor.erase(0, 1);
+    }
+    c = valor[0];
+    if(!esNum(c)){
+        valor.erase(0, 1);
+    }
+    string formato = "0000";
+    if(c >= '0' && c <= '9'){               //es decimal
+        Hexpp(formato, StringDectoIntDec(valor));
+        return formato;
+    }
+    if(c == '$'){               //es hexa
+        for(int i = 0; valor.size() < 4;++i)
+            valor = "0"+valor;
+        return valor;
+    }
+    if(c == '@'){                //es oct
+        Hexpp(formato, OcttoDec(valor, 0));
+        return formato;
+    }
+    if(c == '%'){                //es binario
+        Hexpp(formato, BintoDec(valor, 0));
+        return formato;
+    }
+    return "";
+}
+
+void Hexpp2char(string &cadena, int a){      //mismo que Hexpp pero dos caracteres solamente
+    char uno, dos = cadena[0];
+    while(a--){
+        uno = CharppHex(cadena[1]);
+        if(uno == '0'){
+            dos = CharppHex(cadena[0]);
+        }
+        cadena[0] = dos;
+        cadena[1] = uno;
+        //cout << "CL++ = " << CL << endl;
+    }
+}
+
+void StringtoUpper(string &s){//cambia una string de minusculas a mayusculas
+    for(char &letra : s)
+        letra = toupper(letra);
+}
+
+/*struct para los modos de direccion**************************************************/
+struct ModoDir{
+    string nombre, cop;
+    int li;
+    ModoDir(){};
+    ModoDir(string s){nombre = s;};
+    ModoDir(string a, string b, int c){
+        nombre = a;
+        cop = b;
+        li = c;
+    }
+    void setNombre(string a){
+        nombre = a;
+    }
+    void setCop(string a){
+        cop = a;
+    }
+    void setli(int a){
+        li = a;
+    }
+
+};
+
+/*clase Mnemonico*********************************************************************/
+class Mnemonico{
+    string instruccion;
+    vector<ModoDir> ModosDir;
+
+public:
+    Mnemonico();
+    Mnemonico(string nombre);
+    Mnemonico(string instruccion, vector<ModoDir> modos);
+    string getNombre();
+    vector<ModoDir> getModos();
+    void Add_MD(vector<ModoDir> ModosDir);
+    void Add_VMD(ModoDir modo);
+    //utilidades para los modos de direccionamiento
+    ModoDir MnemoTieneMD(string MD);       //la instruccion puede esar este modo de direccionamiento
+    //validar los modos de dir
+    bool esINH(string operando);
+    bool esIMM(string operando);
+    bool esDIR(string operando);
+    bool esEXT(string operando);
+    bool esREL(string operando, string branch);
+
+};
+
+/*Implementacion de las funciones de la clase Mnemonico***********************************/
+
+Mnemonico::Mnemonico(){};
+Mnemonico::Mnemonico(string nombre){instruccion = nombre;};
+Mnemonico::Mnemonico(string instruccion, vector<ModoDir> modos){this->instruccion = instruccion;this->ModosDir = modos;}
+
+string Mnemonico:: getNombre(){
+    return this->instruccion;
+}
+
+vector<ModoDir> Mnemonico:: getModos(){
+    return ModosDir;
+}
+
+void Mnemonico:: Add_MD(vector<ModoDir> modos){
+    this->ModosDir = modos;
+}
+
+void Mnemonico:: Add_VMD(ModoDir modo){
+    this->ModosDir.push_back(modo);
+}
+//*************************************************************
+
+ModoDir Mnemonico:: MnemoTieneMD(string MD){  //devuelve el modo de direccionamiento si el mnemonico usa ese modo de direccion
+    for(auto modo : ModosDir){
+        if(modo.nombre == MD)
+            return modo;
+    }
+    ModoDir aux("noexiste");
+    return aux;
+}
+
+//******************************************************************
+bool Mnemonico:: esINH(string operando){
+    /*en inherente no es necesario ningun operando
+      por lo que el operando debe estar vacio*/
+    for(auto caracter : operando){          //
+        if( caracter != ' ')        //si hay algo que no sea un espacio, no puede ser inh
+            return false;
+    }                     //se devuelve el MD si es correcto
+    return true;
+}
+
+bool Mnemonico:: esIMM(string operando){
+    int valor = -1;                 //valor es -1 por defecto
+    if(operando[0] == '#'){            //si no lo tiene entonces no es valido
+        operando.erase(0, 1);
+        char c = operando[0];
+        if(esDecValido(operando))               //es decimal
+            valor = StringDectoIntDec(operando);
+        operando.erase(0, 1);         //borro el indicador de la base, pero ya lo guarde en c
+        if(c == '$')                            //es hexa
+            valor = HextoDec(operando, 0);      //si es de 8 bits retorna 1
+        if(c == '@')                       //es oct
+            valor = OcttoDec(operando, 0);         //si es de 8 bits retorna 1
+        if(c == '%')                       //es binario
+            valor = BintoDec(operando, 0);        //si es de 8 bits retorna 1
+    }
+    return MnemoTieneMD("IMM").li-1 == is8or16(valor);
+}
+bool Mnemonico:: esDIR(string operando){
+    char c = operando[0];
+    if(esDecValido(operando))                    //es decimal
+        return is8or16(StringDectoIntDec(operando)) == 1;   //si es de 8 bits return true
+    operando.erase(0, 1);
+    if(c == '$')                                 //es hexa
+        return is8or16(HextoDec(operando, 0)) == 1;
+    if(c == '@')                                 //es oct
+        return is8or16(OcttoDec(operando, 0)) == 1;
+    if(c == '%')                                 //es binario
+        return is8or16(BintoDec(operando, 0)) == 1;
+    return false;
+}
+bool Mnemonico:: esEXT(string operando){
+    char c = operando[0];
+    if(esDecValido(operando))                                   //es decimal
+        return is8or16(StringDectoIntDec(operando)) != -1;
+    operando.erase(0, 1);
+    if(c == '$')                                                //es hexa
+        return is8or16(HextoDec(operando, 0)) != -1;
+    if(c == '@')                                                //es oct
+        return is8or16(OcttoDec(operando, 0)) != -1;
+    if(c == '%')                                                //es binario
+        return is8or16(BintoDec(operando, 0)) != -1;
+    return false;
+}
+
+bool Mnemonico:: esREL(string operando, string branch){
+    char c = operando[0];
+    int longinstr = MnemoTieneMD("REL").li, valor;
+    if(tolower(branch[0]) == 'l')       // si es una instruccion de salto largo
+        longinstr -= 2;
+    if(esDecValido(operando))           //es decimal
+        valor = StringDectoIntDec(operando);
+    else{
+        operando.erase(0, 1);
+        if(c == '$')
+            valor = HextoDec(operando, 0);
+        else if(c == '@')
+            valor = OcttoDec(operando, 0);
+        else if(c == '%')
+            valor = BintoDec(operando, 0);
+        else valor = 1e5;
+    }
+    if(longinstr >= is8or16(valor) && (is8or16(valor) != -1))
+        return true;
+    return false;
+}
+
+
+
+
+
+
+#endif // MNEMONICO_H_INCLUDED

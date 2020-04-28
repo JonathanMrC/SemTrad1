@@ -1,0 +1,8 @@
+    ORG $4000
+E2  EQU $4100
+    BNE E1
+E1  LBNE E1
+    BNE E2
+    LBNE E2
+    BSZ 3
+    END

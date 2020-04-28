@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1514140574 source:c:\users\jonat\desktop\temporal\practica2_st\main.cpp
+	<iostream>
+
+1582875845 source:c:\users\jonat\desktop\seminario traductores\practica2_st\main.cpp
+	<bits/stdc++.h>
+	"Mnemonico.h"
+
+1582917003 c:\users\jonat\desktop\seminario traductores\practica2_st\mnemonico.h
+	<bits/stdc++.h>
+
+1582875845 source:c:\users\jonat\desktop\seminario traductores\practicas\practica2_st\main.cpp
+	<bits/stdc++.h>
+	"Mnemonico.h"
+
+1582917003 c:\users\jonat\desktop\seminario traductores\practicas\practica2_st\mnemonico.h
+	<bits/stdc++.h>
+

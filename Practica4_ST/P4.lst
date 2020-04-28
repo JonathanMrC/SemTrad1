@@ -1,0 +1,9 @@
+0000			    ORG $4000		; directiva
+4000			E1  EQU 20		; directiva
+4000	000a 000b 		E2  DC.B    10,11		; directiva
+4002	89 05		    ADCA #5		; IMM
+4004	99 05		    ADCA  5		; DIR
+4006	D3 00		    ADDD #256		; DIR
+4008			    START		; directiva
+0000	B9 01 00		E3  ADCA 256		; EXT
+0003			    END		; directiva

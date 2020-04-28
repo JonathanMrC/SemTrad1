@@ -1,0 +1,20 @@
+ABA|INH%18 06$2|
+ABX|IDX%1A E5$2|
+ABY|IDX%19 ED$2|
+ADCA|IMM%89 ii$2|DIR%99 dd$2|EXT%B9 hh ll$3|IDX%A9 xb$2|IDX1%A9 xb ff$3|IDX2%A9 xb ee ff$4|[D,IDX]%A9 xb$2|[IDX2]%A9 xb ee ff$4|
+ADCB|IMM%C9 ii$2|DIR%D9 dd$2|EXT%F9 hh ll$3|IDX%E9 xb$2|IDX1%E9 xb ff$3|IDX2%E9 xb ee ff$4|[D,IDX]%E9 xb$2|[IDX2]%E9 xb ee ff$4|
+ADDA|IMM%8B ii$2|DIR%9D dd$2|EXT%BB hh ll$3|IDX%AB xb$2|IDX1%AB xb ff$3|IDX2%AB xb ee ff$4|[D,IDX]%AB xb$2|[IDX2]%AB xb ee ff$4|
+ADDB|IMM%CB ii$2|DIR%DB dd$2|EXT%FB hh ll$3|IDX%EB xb$2|IDX1%EB xb ff$3|IDX2%EB xb ee ff$4|[D,IDX]%EB xb$2|[IDX2]%EB xb ee ff$4|
+ADDD|IMM%C3 jj kk$3|DIR%D3 dd$2|EXT%F3 hh ll$3|IDX%E3 xb$2|IDX1%E3 xb ff$3|IDX2%E3 xb ee ff$4|[D,IDX]%E3 xb$2|[IDX2]%E3 xb ee ff$4|
+ANDA|IMM%84 ii$2|DIR%94 dd$2|EXT%B4 hh ll$3|IDX%A4 xb$2|IDX1%A4 xb ff$3|IDX2%A4 xb ee ff$4|[D,IDX]%A4 xb$2|[IDX2]%A4 xb ee ff$4|
+ANDB|IMM%C4 ii$2|DIR%D4 dd$2|EXT%F4 hh ll$3|IDX%E4 xb$2|IDX1%E4 xb ff$3|IDX2%E4 xb ee ff$4|[D,IDX]%E4 xb$2|[IDX2]%E4 xb ee ff$4|
+ANDCC|IMM%10 ii$2|
+ASL|EXT%78 hh ll$3|IDX%68 xb$2|IDX1%68 xb ff$3|IDX2%68 xb ee ff$4|[D,IDX]%68 xb$2|[IDX2]%68 xb ee ff$4|
+ASLA|INH%48$1|
+ASLB|INH%58$1|
+ASLD|INH%59$1|
+ASR|EXT%77 hh ll$3|IDX%67 xb$2|IDX1%67 xb$2|IDX2%67 xb ee ff$4|[D,IDX]%67 xb$2|[IDX2]%67 xb ee ff$4|
+ASRA|INH%47$1|
+ASRB|INH%57$1|
+BCC|REL%24 rr$2|
+BCLR|DIR%4D dd mm$3|EXT%1D hh ll mm$4|IDX%0D xb mm$3|IDX1%0D xb ff mm$4|IDX2%0D xb ee ff mm$5|

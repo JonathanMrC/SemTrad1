@@ -1,0 +1,9 @@
+    ORG $4000
+E1  EQU 20
+E2  DC.B    10,11
+    ADCA #5
+    ADCA  5
+    ADDD #256
+    START
+E3  ADCA 256
+    END

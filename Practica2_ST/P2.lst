@@ -1,0 +1,29 @@
+    ORG $4000 ; invalido
+    ABA; INH
+    ABA 15 ; invalido
+    ADCA #130; IMM
+    ADDD #130; IMM
+    ADDD 130; DIR
+    ADDD 256; EXT
+    ADDD A,23 ; invalido
+    END ; invalido
+E3  EQU     50 ; invalido
+    ORG     $4000 ; invalido
+E2  EQU     15 ; invalido
+    ADCA    #15; IMM
+    ADCA    15; DIR
+    START ; invalido
+    ADCA    150; DIR
+    ADCA    1500; EXT
+    ADDD    #10; IMM
+    ADDD    10; DIR
+    DC.B ; invalido
+    DC.B    10 ; invalido
+    DC.B    10,11 ; invalido
+    BSZ     10 ; invalido
+    FILL    2,3 ; invalido
+    DC.W ; invalido
+    DC.W    1,2 ; invalido
+    FCC     /HOLA/ ; invalido
+    FCB     10 ; invalido
+E1  END ; invalido
