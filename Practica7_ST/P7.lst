@@ -5,7 +5,7 @@
 4003	06 40 51		   JMP E4		; EXT
 4006	26 00		E2 BNE $0		; invalido
 4008	18 26 00 00		   LBNE 0		; REL
-400c	25 06		   BCS E2		; invalido
+400c	25 06		   BCS E2		; REL
 400e	25 51		   BCS E4		; REL
 4010	18 26 00 32		   LBNE E1		; REL
 4014	18 26 40 51		E3 LBNE E4		; REL

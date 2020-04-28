@@ -426,11 +426,9 @@ int main()
                 if(i == 2)cout << ope << endl;
                 Hexpp(cop, ope);
                 if(i == 2)cout << cop << endl;
-                if(ope > 0 && aux.li == 2 && cop[2] == 'f'){
+                if(aux.li == 2 && ((ope >= 0 && cop[2] == 'f')|| (ope < -128))){
                     valido = false;
-                }
-                if(ope < 0 && aux.li == 2 && ope < 256){
-                    valido = false;
+                    cout << "debug" << endl;
                 }
             }
             if(aux.nombre == "REL9"){
