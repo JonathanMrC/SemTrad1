@@ -63,24 +63,24 @@ int is8or16(int valor){ //si es un entero de 8 bits regresa 1, si es de 16 bit r
     return -1;
 }
 
+bool MSBH(string s){
+    char a = tolower(s[0]);
+    return (a >= '8' || (a >= 'a' && a <= 'f'));
+}
+
 void CharppHex(char &a){             //aumenta el char como si fuera un hexadecimal
-//    cout << "char a aumentar:" << a << endl;
     if(a <= '8' && a >= '0'){
         a++;
-//        cout << "->" << a << endl;
         return;
     }
     if(a == '9'){
         a = 'a';
-//        cout << "->" << a << endl;
         return;    }
     if(a >= 'a' && a <= 'e'){
         a++;
-//        cout << "->" << a << endl;
         return;
     }    if(a == 'f'){
         a = '0';
-//        cout << "->" << a << endl;
         return;
     }
     cout << "El valor hexadecimal no esta en el formato correcto:" << a << " no es hexadecimal\n" ;
@@ -89,15 +89,17 @@ void CharppHex(char &a){             //aumenta el char como si fuera un hexadeci
 }
 
 int HextoDec(string valor, bool cmp2){
-    char c = tolower(valor[0]);
+    char c;
     int val = 0;
-    if(cmp2){
-        if((c == '8') || (c == '9') || (c <= 'f' && c >= 'a') && (valor.size() == 2))
-            val-=256;
-        if((c == '8') || (c == '9') || (c <= 'f' && c >= 'a') && (valor.size() == 4))
-            val-=65536;
+    if(cmp2){       //si es requerido el complemento a 2
+        if(MSBH(valor)){     //valido si el bit mas significativo esta encendido
+            if(valor.size() == 2)  //veo si es un valor de 2 Bytes
+                val-=256;
+            else                    //en caso contrario es un valor de 4 Bytes
+                val-=65536;
+        }
     }
-    reverse(valor.begin(), valor.end());
+    reverse(valor.begin(), valor.end());//Hago reverse al valor
     for(unsigned int i = 0; i < valor.size();++i){
         c = tolower(valor[i]);
         if(c >= '0' && c <= '9')
@@ -130,7 +132,7 @@ int StringDectoIntDec(string valor){
 }
 
 int OcttoDec(string valor, bool cmp2){
-    char c;
+    char c = tolower(valor[0]);
     int val = 0;
     bool neg = false;
     if(cmp2){

@@ -3,7 +3,6 @@
 using namespace std;
 
 /*
-
 En el primero se deben leer las etiquetas y crear el contador de las localidades
 En el segundo paso ya se calcula si es valido la instruccion
 */
@@ -18,7 +17,6 @@ void InsertarMn(vector<Mnemonico> &instrucciones){
         cout << "No se encontro el archivo de los mnemonicos en la carpeta del proyecto\nDireccion:\nTABOP.txt";
     else{
         while(getline(archivo, cadena)){
-            //cout << endl << cadena << endl;
             modos.clear();
             li = pos = 0;
             instruccion = "";
@@ -26,20 +24,17 @@ void InsertarMn(vector<Mnemonico> &instrucciones){
             for(; pos < tam && cadena[pos] != '|';++pos)
                 instruccion += cadena[pos];
             ++pos;
-            //cout << "INSTRUCCION NUEVA:\t" << instruccion << endl;
             for(; pos < tam;++pos){
                 modo = cop = cli = "";
-                //cout << "Modo:";
                 for(; cadena[pos] != '%' && pos < tam; ++pos)
-                    modo+=cadena[pos];//cout << cadena[pos];
+                    modo+=cadena[pos];
                 ++pos;
                 for(; cadena[pos] != '$' && pos < tam; ++pos)
-                    cop+=cadena[pos];//cout << cadena[pos];
+                    cop+=cadena[pos];
                 ++pos;
                 for(;cadena[pos] != '|' && pos < tam;++pos)
-                    cli+=cadena[pos];//cout << cadena[pos];
+                    cli+=cadena[pos];
                 li = StringDectoIntDec(cli);
-                //cout << "\tResultado final:\nModo:"<< aux.first << "\tCOP:" << aux.second << endl;
                 ModoDir md(modo, cop, li);
                 modos.push_back(md);
             }
@@ -67,12 +62,12 @@ void GuardarLst(string s){                              //añade al archivo.lst u
 }
 
 bool esEtiqueta(string s){
-    bool b = false;         //bandera para saber si ya hubo un ':' en la cadena
+    bool b = false;             //bandera para saber si ya hubo un ':' en la cadena
     if(!esLetra(s[0], 2) && s[0] != '_')//si el primer caracter no es ni letra ni '_' no es etiqueta
         return false;
     s.erase(0, 1);
     for(auto candidato : s){
-        if(!b){//si no ha aparecido el ':' entonces todavia es etiqueta
+        if(!b){                 //si no ha aparecido el ':' entonces todavia es etiqueta
             if((!esLetra(candidato, 2)) && (!esNum(candidato)) && (candidato != '_')){//si no es letra, numero o guion bajo o es ':' o no es posible
                 if(candidato == ':')
                     b = true;
@@ -218,16 +213,12 @@ bool esDirectiva(string directiva, string operando, bool HayEti, string etiqueta
             cantidad = StringDectoIntDec(s);
             Hexpp2char(dos, cantidad);
             s = "";
-            //cout << "operador:" << dos << endl;
             for(;operando[pos] != ' ' && pos < operando.size();++pos)
                 s+=operando[pos];
             cantidad = StringDectoIntDec(s);
-            //cout << "cantidad:" << cantidad << endl;
-            //falta validar los char
             Hexpp(CL, cantidad);
             for(int i = 0; i < cantidad;++i)
                 cadena_dir +=dos+' ';
-            //cout << "cadena dir:" << cadena_directiva << endl;
             return true;
         }
         return false;
@@ -302,14 +293,13 @@ void FormatoInstrOper(string &instruccion, string &operando, string &linea){
     linea.erase(0, pos);                                            //elimino la basura
     //*********************************************************************;
     int sig;
-    //cout << "\n<" <<linea << ">"<< endl;
+
     for(pos = 0; pos < linea.size();++pos){                         //recorro lo restante de la cadena, ya que en teoria solo queda el operando
         if(linea[pos] == ' '){                                      //si encuentro un espacio, lo voy a borrar ya que no me es necesario
             for(sig = pos; linea[sig] == ' ' && sig < linea.size();++sig);//recorro la linea mientras encuentre espacios
             linea.erase(pos, sig-pos);                              //borro los n espacios que encontre
         }
     }
-    //cout << "OPAFTERERASE' '<" << linea <<  ">";
     operando = linea;
     return;
 }
@@ -349,7 +339,7 @@ int main()
         BanderaesInstruc = ENDCOD = false;
         cadena_directiva = "";
         pos = linea.find(';');
-        if(pos != -1){                                      //si pos es != de -1 hay un comentario
+        if(pos != -1){                                          //si pos es != de -1 hay un comentario
             comentario = linea.substr(pos, linea.size()-pos);   //guardo el cometario por si acaso
             linea.erase(pos, linea.size()-pos);                 //elimino el cometario de la cadena
         }
@@ -359,10 +349,8 @@ int main()
                 continue;
             candidato = linea.substr(0, pos);
             linea.erase(0, pos);                              //borro la etiqeuta de la linea
-            if(!esEtiqueta(candidato)){
+            if(!esEtiqueta(candidato))
                 valido = false;
-                //cout << "La etiqueta no es valida\t"<<candidato<< endl;
-            }
             else{
                 //elimino el ':' de la cadena candidato en caso de que lo tenga
                 for(pos = 0; pos < candidato.size() && candidato[pos] != ':';++pos);
@@ -370,7 +358,6 @@ int main()
                 etiquetas[candidato] = "$"+CL;
                 //guarda en las cadenas instruccion y operando lo que puede o debe ser la instruccion y operando
                 FormatoInstrOper(instruccion, operando, linea);
-                if(i == 2)cout << "\nInstruccion o directiva|" << instruccion << "|operando|" << operando << endl;
                 if(etiquetas.count(operando) != 0)
                     operando = etiquetas[operando];
                 mnemonico = ExisteInstruccion(instruccion, instrucciones);
@@ -378,11 +365,8 @@ int main()
                 {
                     BanderaesInstruc = true;
                     aux = esOp(mnemonico, operando);
-                    if(aux.nombre != "noexiste"){
-                        if(i == 2)cout << "CL" << CL << endl;
-                        Hexpp(CL, aux.li);
-                        if(i == 2)cout << "CL" << CL << endl;
-                    }                    else
+                    if(aux.nombre != "noexiste")
+                        Hexpp(CL, aux.li);                    else
                         valido = false;
                 }
                 else            //es directiva
@@ -392,21 +376,15 @@ int main()
         else{                                                //debe ser una instruccion
             //guarda en las cadenas instruccion y operando lo que puede o debe ser la instruccion y operando
             FormatoInstrOper(instruccion, operando, linea);
-            if(etiquetas.count(operando) != 0){
-                if(i == 2)cout << "se cambio:" << operando << "por:" << etiquetas[operando];
+            if(etiquetas.count(operando) != 0)
                 operando = etiquetas[operando];
-            }
-            if(i == 2)cout << "\nInstruccion o directiva|" << instruccion << "|operando|" << operando << endl;
             mnemonico = ExisteInstruccion(instruccion, instrucciones);
             if(mnemonico.getNombre() != "-")
             {
                 BanderaesInstruc = true;
                 aux = esOp(mnemonico, operando);
                 if(aux.nombre != "noexiste"){
-                    if(i == 2)cout << "CL" << CL << endl;
-                    if(i == 2) cout << "long inst:" << aux.li << endl;
                     Hexpp(CL, aux.li);
-                    if(i == 2)cout << "CL" << CL << endl;
                 }
                 else
                     valido = false;
@@ -415,75 +393,60 @@ int main()
                 valido = esDirectiva(instruccion, operando, 0, candidato, CL, cadena_directiva, ENDCOD, etiquetas);                                                           //es una directiva
         }
         if(BanderaesInstruc){                       //es una instruccion
-            cop = "0000", copreal = aux.cop;//cout << operando << endl;
+            cop = "0000", copreal = aux.cop;
             int indexcodreal = 3, ope, iterador;
             string registro;
             if(aux.nombre == "REL"){
-                ope = HextoDec(ConvertirAHex(operando), 0);
-                if(i == 2)cout << operando << "-" <<CL << endl;
-                if(i == 2)cout << ope << "-" <<HextoDec(CL, 0) << endl;
-                ope = ope - HextoDec(CL, 0);
-                if(i == 2)cout << ope << endl;
-                Hexpp(cop, ope);
-                if(i == 2)cout << cop << endl;
-                if(aux.li == 2 && ((ope >= 0 && cop[2] == 'f')|| (ope < -128))){
+                ope = HextoDec(ConvertirAHex(operando), 0); //convierte el operando a decimal
+                ope = ope - HextoDec(CL, 0);                //realiza la resta entre el operando y el contador de localidades
+                Hexpp(cop, ope);                            //aumenta el cop, ope veces
+                //si la longitud de instruccion es 2
+                //Y el resultado de la resta es positivo pero representado en hex es negativo
+                //O ope es menor a -128 entonces es invalido por que es de 8 bits
+                if(aux.li == 2 && ((ope >= 0 && MSBH(cop)) || (ope < -128)))
                     valido = false;
-                    cout << "debug" << endl;
-                }
             }
             if(aux.nombre == "REL9"){
-                iterador = operando.find(',');
-                registro = operando.substr(0, iterador);
-                StringtoUpper(registro);
-                if(iterador != -1){
-                    operando.erase(0, iterador+1);
-                    if(etiquetas.count(operando) != 0){
-                        if(i == 2)cout << "se cambio:" << operando << "por:" << etiquetas[operando];
-                        operando = etiquetas[operando];
+                iterador = operando.find(',');//obtengo la ultima posicion antes de la coma
+                registro = operando.substr(0, iterador);//hago una subcadena donde obtengo el que en teoria es el registro
+                StringtoUpper(registro);                //lo convierto a mayus
+                if(iterador != -1){                     //si hay una coma entonces puede ser valido
+                    operando.erase(0, iterador+1);      //el operando es lo que sigue de la coma
+                    if(etiquetas.count(operando) != 0) //si mi mapa de etiquetas contiene el operando
+                        operando = etiquetas[operando]; //cambio el nombre de la etiqueta por el valor
+                    operando = ConvertirAHex(operando); //Lo combierto a a hexadecimal y le doy formato
+                    if(esABDXYS(registro)){                 //Compruebo si es un registro
+                        ope = HextoDec(operando, 1);        //Lo combierto a decimal para realizar la resta
+                        ope = ope - HextoDec(CL, 0);        //Realizo la resta del operando con el contador de localidades
+                        Hexpp(cop, ope);                    //aumento el cop, ope veces
+                                        //Si llegue hasta aca, entonces es valido todo, solo hago algunas validaciones extra del rel9
+                        if(registro == "A")
+                            copreal[4] = '0';
+                        else if(registro == "B")
+                            copreal[4] = '1';
+                        else if(registro == "D")
+                            copreal[4] = '4';
+                        else if(registro == "X")
+                            copreal[4] = '5';
+                        else if(registro == "Y")
+                            copreal[4] = '6';
+                        else if(registro == "SP")
+                            copreal[4] = '7';
+                        if(ope < 0)
+                            copreal[3] = '9';
+                        else copreal[3] = '8';
                     }
-                    operando = ConvertirAHex(operando);
-                    if(i == 2)cout << "reg:" << registro << "\toperando:" << operando << endl;
-                    if(esABDXYS(registro)){
-                        ope = HextoDec(operando, 1);
-                        if(i == 2)cout << operando << "-" <<CL << endl;
-                        if(i == 2)cout << ope << "-" <<HextoDec(CL, 0) << endl;
-                        if(ope >= 0)
-                            ope = ope - HextoDec(CL, 0);
-                        else{
-                            ope*=-1;
-                            ope+=HextoDec(CL, 0);
-                        }
-                        if(i == 2)cout << ope << endl;
-                        Hexpp(cop, ope);
-                        if(i == 2)cout << cop << endl;
-                    }
-                    else valido = false;
+                    else valido = false;                //Si el primer operando no es un registro entonces es invalido
                 }
-                else valido = false;
+                else valido = false;    //es invalido ya que solo hay un operador -> el campo del registro
             }
-            else
-                cop = ConvertirAHex(operando);  //cout << cop << endl;
+            else                        //si no es ningun relativo entonces el operando no realiza ningun cambio mas que el de pasarlo a hexadecimal
+                cop = ConvertirAHex(operando);
+            //Un for donde cambio los valores del copreal por los obtenidos del calculo
             for(int i = copreal.size()-1;indexcodreal >= 0 && i >= 0;--i)
             {
-                if(esLetra(copreal[i], 1))
+                if(esLetra(copreal[i], 1))//solo cambio los valores del cop real si estos son minusculas
                     copreal[i] = cop[indexcodreal--];
-            }
-            if(aux.nombre == "REL9"){
-                if(registro == "A")
-                    copreal[4] = '0';
-                else if(registro == "B")
-                    copreal[4] = '1';
-                else if(registro == "D")
-                    copreal[4] = '4';
-                else if(registro == "X")
-                    copreal[4] = '5';
-                else if(registro == "Y")
-                    copreal[4] = '6';
-                else if(registro == "SP")
-                    copreal[4] = '7';
-                if(ope < 0)
-                    copreal[3] = '9';
-                else copreal[3] = '8';
             }
             Clinea = CCL+"\t"+copreal+"\t"+Clinea;
             if(valido)
@@ -496,17 +459,18 @@ int main()
                 Clinea+="\t\t; directiva\n";
             else Clinea+="\t\t; invalido\n";
         }
-        if(i == 2)GuardarLst(Clinea);
-        if(ENDCOD)
+        if(i == 2)GuardarLst(Clinea);   //de esta manera solo guardo el .lst una vez
+        if(ENDCOD)                      //si se encontro la directiva END, termina el analisis
             break;
     }
-    if(i & 1){
+    if(i & 1)
         for(auto e : etiquetas)
             cout << e.first << "\t" << e.second << endl;
-    }
     else cout << "\n\n\n\n\t\t\t\tTerminado\n\t\t\t\tGuardado en:\n\t\t\t\tP7.lst\n\n\n\n\n";
-    GuardarEt(etiquetas);
-    archivo.close();
+
+    GuardarEt(etiquetas);//guardo las etiquetas
+    archivo.close();//cierro el archivo .asm
+
     }
     return 0;
 }
