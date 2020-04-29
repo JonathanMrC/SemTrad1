@@ -457,9 +457,18 @@ int main()
                             copreal[4] = '6';
                         else if(registro == "SP")
                             copreal[4] = '7';
-                        if(ope < 0)
-                            copreal[3] = '9';
-                        else copreal[3] = '8';
+                        if(ope < 0){
+                            if(instruccion == "IBEQ")
+                                copreal[3] = '9';
+                            else if(instruccion == "IBNE")
+                                copreal[3] = 'B';
+                        }
+                        else{
+                             if(instruccion == "IBEQ")
+                                copreal[3] = '8';
+                            else if(instruccion == "IBNE")
+                                copreal[3] = 'A';
+                        }
                     }
                     else valido = false;                //Si el primer operando no es un registro entonces es invalido
                 }
@@ -501,7 +510,8 @@ int main()
                 iterador = operando.find(',');
                 string n = operando.substr(0, iterador), r, binario = "";
                 r = operando.substr(iterador+1, operando.size()-iterador+1);
-                StringtoUpper(r);                binario = "111"+rr[r]+"011";
+                StringtoUpper(r);
+                binario = "111"+rr[r]+"011";
                 Hexpp2char(cop, BintoDec(binario, 0));
                 cop += ""+ConvertirAHex(n);
                 indexcodreal = 5;

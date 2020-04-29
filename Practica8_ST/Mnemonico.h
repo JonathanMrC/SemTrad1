@@ -12,13 +12,38 @@ int ABS(int valor){
     return valor;
 }
 
+
+
+void Complementoa1(string &s){
+    for(auto &c : s){
+        if(c == '1')
+            c = '0';
+        else
+            c = '1';
+    }
+}
+
+void Complementoa2(string &s){
+    Complementoa1(s);
+    bool unomas = false;
+    for(int i = s.size()-1; i >= 0;--i){
+        if(s[i] == '0'){
+            unomas = true;
+            s[i] = '1';
+            break;
+        }
+        else
+            s[i] = '0';
+    }
+    if(!unomas)
+        s="1"+s;
+}
+
 string DectoBin(int valor){
     string s = "";
     bool neg = false;
-    if(valor < 0){
-        valor++;
+    if(valor < 0)
         neg = true;
-    }
     valor = ABS(valor);
     while(valor){
         if(valor & 1)
@@ -27,14 +52,7 @@ string DectoBin(int valor){
         valor>>=1;
     }
     reverse(s.begin(), s.end());
-    if(neg){
-        for(int i = 0; i < s.size()-1;++i){
-            if(s[i] == '0')
-                s[i] = '1';
-            else
-                s[i] = '0';
-        }
-    }
+    if(neg)Complementoa2(s);
     return s;
 }
 
@@ -341,9 +359,9 @@ public:
     bool esREL(string operando, string branch);
     bool esREL9(string operando);
     bool esIDX(string operando);
-    bool esIDX1(string operando);//idx1 y idx2
-    bool es_IDX2_(string operando); //[idx2]
-    bool esDIDX(string operando);    //[d, idx]
+    bool esIDX1(string operando);
+    bool es_IDX2_(string operando);
+    bool esDIDX(string operando);
 
 };
 
@@ -537,10 +555,6 @@ bool Mnemonico:: esDIDX(string operando){//Es la sexta formula
     if(!esXYSPPC(parte2)) return false;     //si el segundo valor no es un registro valido
     return true;                            //en caso de no entrar a ninguno de los if anteriores es valido
 }
-
-
-
-
 
 
 #endif // MNEMONICO_H_INCLUDED

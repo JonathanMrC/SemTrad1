@@ -22,5 +22,6 @@ BNE|REL%26 rr$2|
 LBNE|REL%18 26 qq rr$4|
 JMP|EXT%06 hh ll$3|IDX%05 xb$2|IDX1%05 xb ff$|IDX2%05 xb ee ff$4|[D,IDX]%05 xb$2|[IDX2]%05 xb ee ff$4|
 IBEQ|REL9%04 lb rr$3|
+IBNE|REL9%04 lb rr$3|
 BCS|REL%25 rr$2|
 LDAA|IMM%86 ii$2|DIR%96 dd$2|EXT%B6 hh ll$3|IDX%A6 xb$2|IDX1%A6 xb ff$3|IDX2%A6 xb ee ff$4|[D,IDX]%A6 xb$2|[IDX2]%A6 xb ee ff$4|
