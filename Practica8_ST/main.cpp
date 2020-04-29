@@ -469,6 +469,7 @@ int main()
                 iterador = operando.find(',');
                 string n = operando.substr(0, iterador), r, binario = "rr0nnnnn";
                 r = operando.substr(iterador+1, operando.size()-iterador+1);
+                StringtoUpper(r);
                 binario = DectoBin(StringDectoIntDec(n));
                 for(int i = binario.size(); i < 5;++i)
                     binario = '0'+binario;
@@ -481,6 +482,7 @@ int main()
                 iterador = operando.find(',');
                 string n = operando.substr(0, iterador), r, binario = "", z = "0", s = "0";
                 r = operando.substr(iterador+1, operando.size()-iterador+1);
+                StringtoUpper(r);
                 int valor = StringDectoIntDec(n);
                 if(valor < -256 || valor > 255)
                     z = "1";
@@ -499,7 +501,7 @@ int main()
                 iterador = operando.find(',');
                 string n = operando.substr(0, iterador), r, binario = "";
                 r = operando.substr(iterador+1, operando.size()-iterador+1);
-                binario = "111"+rr[r]+"011";
+                StringtoUpper(r);                binario = "111"+rr[r]+"011";
                 Hexpp2char(cop, BintoDec(binario, 0));
                 cop += ""+ConvertirAHex(n);
                 indexcodreal = 5;
@@ -511,6 +513,8 @@ int main()
                 iterador = operando.find(',');
                 string n = operando.substr(0, iterador), r, binario = "";
                 r = operando.substr(iterador+1, operando.size()-iterador+1);
+                StringtoUpper(r);
+                StringtoUpper(n);
                 binario = "111"+rr[r]+"111";
                 indexcodreal = 1;
                 if(n != "D"){
@@ -523,6 +527,7 @@ int main()
             else                        //si no es ningun relativo entonces el operando no realiza ningun cambio mas que el de pasarlo a hexadecimal
                 cop = ConvertirAHex(operando);
             //Un for donde cambio los valores del copreal por los obtenidos del calculo
+            StringtoUpper(cop);
             for(int i = copreal.size()-1;indexcodreal >= 0 && i >= 0;--i)
             {
                 if(esLetra(copreal[i], 1))//solo cambio los valores del cop real si estos son minusculas

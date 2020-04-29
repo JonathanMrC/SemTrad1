@@ -3,12 +3,12 @@
 4002			E1  ORG $4010		; directiva
 4010	96 10		    LDAA @20		; DIR
 4012	A6 f0 10		    LDAA 16, SP		; IDX1
-4015	A6 c1		    LDAA -16, PC		; IDX
+4015	A6 d0		    LDAA -16, PC		; IDX
 4017	26 e9		    BNE E1		; REL
 4019	06 40 02		    JMP E1		; EXT
 401c	18 26 ff e2		    LBNE E1		; REL
-4020			    IBNE A,E1		; invalido
-4020			E2  START		; directiva
-0000	A6 87		E3  LDAA -10, SP		; IDX
-0002	05 87		    JMP -10, SP		; IDX
+4020	04 B0 df		    IBNE A,E1		; REL9
+4023			E2  START		; directiva
+0000	A6 86		E3  LDAA -10, SP		; IDX
+0002	05 86		    JMP -10, SP		; IDX
 0004			E4 END		; directiva

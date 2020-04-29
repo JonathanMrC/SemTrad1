@@ -2,19 +2,19 @@
 4000	86 14		    LDAA #20		; IMM
 4002			E1  ORG $4010		; directiva
 4010	96 10		    LDAA @20		; DIR
-4012	A6 f0 10		    LDAA 16, SP		; IDX1
-4015	A6 c1		    LDAA -16, PC		; IDX
-4017	26 e9		    BNE E1		; REL
+4012	A6 F0 10		    LDAA 16, SP		; IDX1
+4015	A6 C1		    LDAA -16, PC		; IDX
+4017	26 E9		    BNE E1		; REL
 4019	06 40 02		    JMP E1		; EXT
-401c	18 26 ff e2		    LBNE E1		; REL
+401c	18 26 FF E2		    LBNE E1		; REL
 4020			    IBNE A,E1		; invalido
 4020			E2  START		; directiva
 0000	A6 87		E3  LDAA -10, SP		; IDX
 0002	05 87		    JMP -10, SP		; IDX
-0004	A6 ef		    LDAA [D,Y]		; [D,IDX]
+0004	A6 EF		    LDAA [D,Y]		; [D,IDX]
 0006	A6 --		    LDAA [A,Y]		; invalido
-0008	A6 eb 01 00		    LDAA [256,Y]		; [IDX2]
-000c	A6 eb ff ff		    LDAA [65535,Y]		; [IDX2]
-0010	A6 f3 00 0a		    LDAA [10,SP]		; [IDX2]
-0014	A6 fb 00 64		    LDAA [100, PC]		; [IDX2]
+0008	A6 EB 01 00		    LDAA [256,Y]		; [IDX2]
+000c	A6 EB FF FF		    LDAA [65535,Y]		; [IDX2]
+0010	A6 F3 00 0A		    LDAA [10,SP]		; [IDX2]
+0014	A6 FB 00 64		    LDAA [100, PC]		; [IDX2]
 0018			E4 END		; directiva
