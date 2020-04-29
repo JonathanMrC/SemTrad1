@@ -6,6 +6,38 @@ using namespace std;
 
 /*utilidades************************************************************************/
 
+int ABS(int valor){
+    if(valor < 0)
+        valor*=-1;
+    return valor;
+}
+
+string DectoBin(int valor){
+    string s = "";
+    bool neg = false;
+    if(valor < 0){
+        valor++;
+        neg = true;
+    }
+    valor = ABS(valor);
+    while(valor){
+        if(valor & 1)
+            s+='1';
+        else s+='0';
+        valor>>=1;
+    }
+    reverse(s.begin(), s.end());
+    if(neg){
+        for(int i = 0; i < s.size()-1;++i){
+            if(s[i] == '0')
+                s[i] = '1';
+            else
+                s[i] = '0';
+        }
+    }
+    return s;
+}
+
 bool esNum(char &c){                //es para saber si un char es un numero
     if(c >= '0' && c <= '9')
         return true;
@@ -14,6 +46,10 @@ bool esNum(char &c){                //es para saber si un char es un numero
 
 bool esABDXYS(string c){
     return c == "A" || c == "B" || c == "D" || c == "X" || c == "Y" || c == "SP";
+}
+
+bool esXYSPPC(string c){
+    return c == "X" || c == "Y" || c == "SP" || c == "PC";
 }
 
 bool esDecValido(string cadena){
@@ -296,7 +332,7 @@ public:
     void Add_MD(vector<ModoDir> ModosDir);
     void Add_VMD(ModoDir modo);
     //utilidades para los modos de direccionamiento
-    ModoDir MnemoTieneMD(string MD);       //la instruccion puede esar este modo de direccionamiento
+    ModoDir MnemoTieneMD(string MD);       //la instruccion puede usar este modo de direccionamiento
     //validar los modos de dir
     bool esINH(string operando);
     bool esIMM(string operando);
@@ -304,6 +340,8 @@ public:
     bool esEXT(string operando);
     bool esREL(string operando, string branch);
     bool esREL9(string operando);
+    bool esIDX(string operando);
+    bool esIDX1(string operando);
 
 };
 
@@ -441,6 +479,31 @@ bool Mnemonico:: esREL9(string operando){
     if(longinstr >= is8or16(valor) && (is8or16(valor) != -1))
         return true;
     return false;
+}
+
+bool Mnemonico:: esIDX(string operando){//Es la primera formula
+    string parte1 = "", parte2;
+    int pos = operando.find(','), valor;   //busco la coma del operando
+    if(pos == -1) return false;     //si no hay coma entonces el operando no es correcto para idx
+    parte1 = operando.substr(0, pos);
+    parte2 = operando.substr(pos+1, operando.size()-pos+1);
+    if(!esDecValido(parte1) && (parte1 != "")) return false;//si el primer valor no es un numero
+    valor = StringDectoIntDec(parte1);     //obtengo el valor del numero en decimal
+    if(valor < -16 || valor > 15) return false;             //veo si es valido para idx
+    if(!esXYSPPC(parte2))   return false;   //si el segundo valor no es un registro valido
+    return true;                            //en caso de no entrar a ninguno de los if anteriores es valido
+}
+bool Mnemonico:: esIDX1(string operando){//Es la segunda formula
+    string parte1, parte2;
+    int pos = operando.find(','), valor;    //busco la coma del operando
+    if(pos == -1) return false;             //si no hay coma entonces el operando no es correcto para idx
+    parte1 = operando.substr(0, pos);
+    parte2 = operando.substr(pos+1, operando.size()-pos+1);
+    if(!esDecValido(parte1)) return false;        //si el primer valor no es un numero
+    valor = StringDectoIntDec(parte1);      //obtengo el valor del numero en decimal
+    if(valor < -65536 || valor > 65535) return false;             //veo si es valido para idx1
+    if(!esXYSPPC(parte2)) return false;     //si el segundo valor no es un registro valido
+    return true;                            //en caso de no entrar a ninguno de los if anteriores es valido
 }
 
 

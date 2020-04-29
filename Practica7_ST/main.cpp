@@ -117,6 +117,18 @@ ModoDir esOp(Mnemonico &instruccion, string operando){
             return aux;
         else tmp = aux;
     }
+    aux = instruccion.MnemoTieneMD("IDX");
+    if(aux.nombre != "noexiste"){
+        if(instruccion.esIDX(operando))
+            return aux;
+        else tmp = aux;
+    }
+    aux = instruccion.MnemoTieneMD("IDX1");
+    if(aux.nombre != "noexiste"){
+        if(instruccion.esIDX1(operando))
+            return aux;
+        else tmp = aux;
+    }
     return tmp;
 }
 
@@ -317,6 +329,7 @@ int main()
     vector<Mnemonico> instrucciones;
     Mnemonico mnemonico;
     map<string, string> etiquetas;
+    map<string, string> rr = {{"X", "00"},{"Y", "01"},{"SP", "10"},{"PC", "11"}};
     //variables
     string linea, comentario, Clinea, instruccion, operando, CL = "0000", CCL, cadena_directiva = "", candidato, cop, copreal;
     int pos;
@@ -406,7 +419,7 @@ int main()
                 if(aux.li == 2 && ((ope >= 0 && MSBH(cop)) || (ope < -128)))
                     valido = false;
             }
-            if(aux.nombre == "REL9"){
+            else if(aux.nombre == "REL9"){
                 iterador = operando.find(',');//obtengo la ultima posicion antes de la coma
                 registro = operando.substr(0, iterador);//hago una subcadena donde obtengo el que en teoria es el registro
                 StringtoUpper(registro);                //lo convierto a mayus
@@ -439,6 +452,33 @@ int main()
                     else valido = false;                //Si el primer operando no es un registro entonces es invalido
                 }
                 else valido = false;    //es invalido ya que solo hay un operador -> el campo del registro
+            }
+            else if(aux.nombre == "IDX"){//si el modo es IDX de 8 bits
+                iterador = operando.find(',');
+                string n = operando.substr(0, iterador), r, binario = "rr0nnnnn";
+                r = operando.substr(iterador+1, operando.size()-iterador+1);
+                binario = DectoBin(StringDectoIntDec(n));
+                for(int i = binario.size(); i < 5;++i)
+                    binario = '0'+binario;
+                binario = rr[r]+"0"+binario;
+                Hexpp(cop, BintoDec(binario, 0));
+
+            }
+            else if(aux.nombre == "IDX1"){//si el modo es IDX1 de 9 bits y 16 bits
+                cop = "00";
+                iterador = operando.find(',');
+                string n = operando.substr(0, iterador), r, binario = "", z = "0", s = "0";
+                r = operando.substr(iterador+1, operando.size()-iterador+1);
+                int valor = StringDectoIntDec(n);
+                if(valor < -256 || valor > 255)
+                    z = "1";
+                if(valor < 0) s = "1";
+                binario = "111"+rr[r]+"0"+z+s;
+                Hexpp2char(cop, BintoDec(binario, 0));
+                if(z == "1")
+                    cop += ""+ConvertirAHex(n);
+                else
+                    cop += ""+ConvertirAHex(n).substr(2, 2);
             }
             else                        //si no es ningun relativo entonces el operando no realiza ningun cambio mas que el de pasarlo a hexadecimal
                 cop = ConvertirAHex(operando);
